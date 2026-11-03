@@ -21,7 +21,7 @@ jobs:
       - name: Upload Single File
         uses: actions/upload-artifact@v7.0.2
         with:
-          name: singlefile
+          name: single-file
           path: ./myartifact.txt
       - name: Upload from directory
         uses: actions/upload-artifact@v7.0.2
@@ -38,8 +38,27 @@ jobs:
       - name: Multiple paths with exclusions
         uses: actions/upload-artifact@v7.0.2
         with:
-          name: multiple paths with exclusions
+          name: multiple-paths-with-exclusions
           path: |
             ./myartifact.txt
             artifacts/
             !**/hostname.txt
+  job2:
+    name: JOB2
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checking current directory
+        run: |
+          pwd
+          ls -ltr
+      - name: Download single file artifact
+        uses: actions/download-artifact@v8.0.2
+        with:
+          name: single-file
+      - name: Checking current directory port download
+        run: |
+          pwd
+          ls -ltr
+
+        
+
