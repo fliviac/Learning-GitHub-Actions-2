@@ -1,5 +1,16 @@
 name: my-first-workflow
-on: push
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+env:
+  ENV_TYPE: DEV
+  APP_USER: thinknyx
+  APP_PORT: 80
+  
 jobs:
   job1:
     name: JOB1
@@ -60,50 +71,42 @@ jobs:
         run: |
           pwd
           ls -ltr
+      - name: Referring environment variables
+        run: |
+          echo "[INFO] Running deployment for $ENV_TYPE with user $APP_USER."
+          echo "[INFO] Once deployment application is accessible on port $APP_PORT."
+      - name: Referring repository secrets
+        run: |
+          echo "[INFO] Application password is ${{ secrets.APP_PASSWORD }}."
   job3:
     name: JOB3
     runs-on: ubuntu-latest
-    needs: job1
     steps:
-      - name: Checking current directory
+      - name: Referring context or in-built variables
         run: |
-          pwd
-          ls -ltr
-      - name: Download directory artifact
-        uses: actions/download-artifact@v8.0.2
-        with:
-          name: directory_artifacts
-      - name: Checking current directory post download
-        run: |
-          pwd
-          ls -ltr
-  job4:
-    name: JOB4
+          echo "[INFO] Triggered by ${{ github.event_name }}."
+          echo "[INFO] New changes are added by ${{ github.actor }} in ${{ github.ref_name }} branch (${{ github.head_ref }})."
+          echo "[INFO] Current step is running on ${{ runner.os }}."
+          echo "[INFO] Current job id is ${{ job.check_run_id }}."
+  staging:
+    name: STAGE DEPLOYMENT
     runs-on: ubuntu-latest
-    needs: job1
     steps:
-      - name: Creating custom folder for Download
-        run: |
-          mkdir -p single_file
-          mkdir -p download_directory
-      - name: Checking current directory
-        run: |
-          pwd
-          ls -ltr
-      - name: Download single file artifact
-        uses: actions/download-artifact@v8.0.2
-        with:
-          name: single-file
-          path: single_file
-      - name: Download directory
-        uses: actions/download-artifact@v8.0.2
-        with:
-          name: directory_artifacts
-          path: download_directory
-      - name: Checking current directory post download
-        run: |
-          pwd
-          echo "CHECKING SINGLE FILE DIRECTORY"
-          ls -ltr single_file
-          echo "CHECKING DIRECTORY ARTIFACTS"
-          ls -ltr download_directory
+      - name: Referring environment variables
+        run: echo "[INFO] Running deployment on ${{ vars.HOSTNAME }} using ${{ vars.USER }}."
+      - name: Referring environment secrets
+        run: echo "[INFO] Password for ${{ vars.USER }} is ${{ secrets.PASSWORD }}."
+    environment:
+      name: STAGING
+    if: github.ref_name == 'dev'
+  production:
+    name: PROD DEPLOYMENT
+    runs-on: ubuntu-latest
+    steps:
+      - name: Referring environment variables
+        run: echo "[INFO] Runnig deployment on ${{ vars.HOSTNAME }} using ${{ vars.USER }}."
+      - name: Referring environment secrets
+        run: echo "[INFO] Password for ${{ vars.USER }} is ${{ secrets.PASSWORD }}."
+    environment:
+      name: PRODUCTION
+    if: github.ref_name == 'main'
