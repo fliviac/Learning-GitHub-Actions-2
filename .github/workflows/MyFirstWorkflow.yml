@@ -6,6 +6,11 @@ on:
   pull_request:
     branches:
       - main
+env:
+  ENV_TYPE: DEV
+  APP_USER: thinknyx
+  APP_PORT: 80
+  
 jobs:
   job1:
     name: JOB1
@@ -66,52 +71,7 @@ jobs:
         run: |
           pwd
           ls -ltr
-  job3:
-    name: JOB3
-    runs-on: ubuntu-latest
-    needs: job1
-    steps:
-      - name: Checking current directory
+      - name: Referring environment variables
         run: |
-          pwd
-          ls -ltr
-      - name: Download directory artifact
-        uses: actions/download-artifact@v8.0.2
-        with:
-          name: directory_artifacts
-      - name: Checking current directory post download
-        run: |
-          pwd
-          ls -ltr
-  job4:
-    name: JOB4
-    runs-on: ubuntu-latest
-    needs: job1
-    steps:
-      - name: Creating custom folder for Download
-        run: |
-          mkdir -p single_file
-          mkdir -p download_directory
-      - name: Checking current directory
-        run: |
-          pwd
-          ls -ltr
-      - name: Download single file artifact
-        uses: actions/download-artifact@v8.0.2
-        with:
-          name: single-file
-          path: single_file
-      - name: Download directory
-        uses: actions/download-artifact@v8.0.2
-        with:
-          name: directory_artifacts
-          path: download_directory
-      - name: Checking current directory post download
-        run: |
-          pwd
-          echo "CHECKING SINGLE FILE DIRECTORY"
-          ls -ltr single_file
-          echo "CHECKING DIRECTORY ARTIFACTS"
-          ls -ltr download_directory
-      - name: Step for PR DEMO
-        run: exit 0
+          echo "[INFO] Running deployment for $ENT_TYPE with user $APP_USER."
+          echo "[INFO] Once deployment application is accessible on port $APP_PORT."
