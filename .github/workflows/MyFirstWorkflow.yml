@@ -24,11 +24,11 @@ jobs:
           pip install -r requirements.txt
       - name: Run unit tests
         run: |
-          mkdir reports/
+          mkdir ./reports/
           pytest junit-xml=./reports/unit-test-results.xml --cov=. --cov-report=xml --cov-report=term-missing -v
       - name: Upload Code Coverage Report
         uses: actions/upload-artifact@v7.0.2
         with:
           name: unit-test_report
-          path: report/
+          path: reports/
           
