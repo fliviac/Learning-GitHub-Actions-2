@@ -73,5 +73,5 @@ jobs:
           ls -ltr
       - name: Referring environment variables
         run: |
-          echo "[INFO] Running deployment for $ENT_TYPE with user $APP_USER."
+          echo "[INFO] Running deployment for $ENV_TYPE with user $APP_USER."
           echo "[INFO] Once deployment application is accessible on port $APP_PORT."
