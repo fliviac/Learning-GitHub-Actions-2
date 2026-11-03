@@ -35,3 +35,11 @@ jobs:
           path: |
             ./myartifact.txt
             artifacts/
+      - name: Multiple paths with exclusions
+        uses: actions/upload-artifact@v7.0.2
+        with:
+          name: multiple paths with exclusions
+          path: |
+            ./myartifact.txt
+            artifacts/
+            !**/hostname.txt
