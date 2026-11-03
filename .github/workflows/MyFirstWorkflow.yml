@@ -115,3 +115,5 @@ jobs:
           ls -ltr single_file
           echo "CHECKING DIRECTORY ARTIFACTS"
           ls -ltr download_directory
+      - name: Step for PR DEMO
+        run: exit 1
