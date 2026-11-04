@@ -29,7 +29,7 @@ jobs:
       - name: Upload Code Coverage Report
         uses: actions/upload-artifact@v7.0.2
         with:
-          name: unit-test_report
+          name: unit-test-report
           path: reports/
   codeql:
     name: CodeQL Security Scan
