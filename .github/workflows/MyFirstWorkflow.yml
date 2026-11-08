@@ -9,7 +9,7 @@ on:
       - main
 jobs:
   unit-tests:
-    name: Running Unit-Tests
+    name: Running Unit-Tests 1
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
